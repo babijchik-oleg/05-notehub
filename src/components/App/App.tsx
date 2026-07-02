@@ -9,6 +9,12 @@ import css from "./App.module.css";
 import type { Note } from "../../types/note";
 import { fetchNotes, createNote, deleteNote } from "../../services/noteService";
 
+interface NoteFormValues {
+  title: string;
+  content: string;
+  tag: string;
+}
+
 const App = () => {
   const [notes, setNotes] = useState<Note[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -25,9 +31,12 @@ const App = () => {
     }
   };
 
-  const debouncedFetchNotes = useDebouncedCallback((query, currentPage) => {
-    loadNotes(query, currentPage);
-  }, 500);
+  const debouncedFetchNotes = useDebouncedCallback(
+    (query: string, currentPage: number) => {
+      loadNotes(query, currentPage);
+    },
+    500,
+  );
 
   useEffect(() => {
     debouncedFetchNotes(searchQuery, page);
@@ -38,7 +47,7 @@ const App = () => {
     setPage(1);
   };
 
-  const handleCreateNote = async (noteData: Partial<Note>) => {
+  const handleCreateNote = async (noteData: NoteFormValues) => {
     const newNote = await createNote(noteData);
     if (newNote) {
       setIsModalOpen(false);
@@ -49,7 +58,6 @@ const App = () => {
     }
   };
 
-  // Функція для видалення нотатки з сервера та стану
   const handleDeleteNote = async (id: string | number) => {
     const deleted = await deleteNote(id);
     if (deleted) {

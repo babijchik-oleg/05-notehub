@@ -3,9 +3,15 @@ import { createPortal } from "react-dom";
 import css from "./Modal.module.css";
 
 const modalRoot = document.querySelector("#modal-root") || document.body;
-export const Modal = ({ onClose, children }) => {
+
+interface ModalProps {
+  onClose: () => void;
+  children: React.ReactNode;
+}
+
+export const Modal = ({ onClose, children }: ModalProps) => {
   useEffect(() => {
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.code === "Escape") {
         onClose();
       }
@@ -16,7 +22,7 @@ export const Modal = ({ onClose, children }) => {
     };
   }, [onClose]);
 
-  const handleBackdropClick = (event) => {
+  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
       onClose();
     }

@@ -12,9 +12,9 @@ const ReactPaginate = (
 ).default;
 
 interface PaginateProps {
+  perPage: number;
   pageCount: number;
   forcePage: number;
-  perPage: number;
   onPageChange: (page: number) => void;
 }
 

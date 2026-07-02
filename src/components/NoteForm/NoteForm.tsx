@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import * as Yup from "yup";
 import css from "./NoteForm.module.css";
 
@@ -17,14 +17,28 @@ const NoteValidationSchema = Yup.object().shape({
     .required("Виберіть тег"),
 });
 
-const NoteForm = ({ onCancel, onSubmitSuccess }) => {
-  const initialValues = {
+interface NoteFormValues {
+  title: string;
+  content: string;
+  tag: string;
+}
+
+interface NoteFormProps {
+  onCancel: () => void;
+  onSubmitSuccess: (values: NoteFormValues) => void;
+}
+
+const NoteForm = ({ onCancel, onSubmitSuccess }: NoteFormProps) => {
+  const initialValues: NoteFormValues = {
     title: "",
     content: "",
     tag: "Todo",
   };
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = (
+    values: NoteFormValues,
+    { resetForm }: FormikHelpers<NoteFormValues>,
+  ) => {
     console.log("Submitted values:", values);
     if (onSubmitSuccess) onSubmitSuccess(values);
     resetForm();
