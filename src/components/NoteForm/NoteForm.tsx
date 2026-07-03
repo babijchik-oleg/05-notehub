@@ -1,4 +1,3 @@
-import React from "react";
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import * as Yup from "yup";
 import css from "./NoteForm.module.css";
