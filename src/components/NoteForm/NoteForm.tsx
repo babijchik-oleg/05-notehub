@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNote } from "../../services/noteService";
+import { createNote, type NoteTag } from "../../services/noteService";
 import css from "./NoteForm.module.css";
 
 const NoteValidationSchema = Yup.object().shape({
@@ -21,7 +21,7 @@ const NoteValidationSchema = Yup.object().shape({
 interface NoteFormValues {
   title: string;
   content: string;
-  tag: string;
+  tag: NoteTag;
 }
 
 interface NoteFormProps {

@@ -32,9 +32,8 @@ const App = () => {
     console.log("Selected note:", note);
   };
 
-  const notes = data?.notes || data?.results || [];
-  const totalPages =
-    data?.totalPages || Math.ceil((data?.total_results || 0) / perPage) || 0;
+  const notes = data?.notes || [];
+  const totalPages = data?.totalPages || 0;
 
   return (
     <div className={css.app}>
