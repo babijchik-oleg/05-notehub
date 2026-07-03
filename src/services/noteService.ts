@@ -2,15 +2,11 @@ import { type Note } from "../types/note";
 import axios from "axios";
 
 const NOTEHUB_TOKEN = import.meta.env.VITE_NOTEHUB_TOKEN;
+export type NoteTag = "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
 
 interface NOTEHUBResponse {
   totalPages: number;
-  notes: [];
-  results: Note[];
-  page: number;
-  perPage: number;
-  total_pages: number;
-  total_results: number;
+  notes: Note[];
 }
 
 const api = axios.create({
@@ -28,9 +24,7 @@ export async function fetchNotes(
   page: number = 1,
   perPage: number = 12,
 ): Promise<NOTEHUBResponse | null> {
-  if (!NOTEHUB_TOKEN) {
-    console.error("NOTEHUB  Access Token is missing! Check your .env file.");
-  }
+  if (!NOTEHUB_TOKEN) return null;
 
   try {
     const response = await api.get<NOTEHUBResponse>("/notes", {
@@ -46,16 +40,13 @@ export async function fetchNotes(
 
 export async function createNote(noteData: {
   title: string;
-  content: string;
-  tag: string;
+  content: string | null;
+  tag: NoteTag;
 }): Promise<Note | null> {
-  if (!NOTEHUB_TOKEN) {
-    console.error("NOTEHUB  Access Token is missing! Check your .env file.");
-    return null;
-  }
+  if (!NOTEHUB_TOKEN) return null;
+
   try {
     const response = await api.post<Note>("/notes", noteData);
-
     return response.data;
   } catch (error) {
     console.error("Error creating note:", error);
