@@ -1,7 +1,17 @@
-import { type Note, type NOTEHUBResponse } from "../types/note";
+import { type Note } from "../types/note";
 import axios from "axios";
 
 const NOTEHUB_TOKEN = import.meta.env.VITE_NOTEHUB_TOKEN;
+
+interface NOTEHUBResponse {
+  totalPages: number;
+  notes: [];
+  results: Note[];
+  page: number;
+  perPage: number;
+  total_pages: number;
+  total_results: number;
+}
 
 const api = axios.create({
   baseURL: "https://notehub-public.goit.study/api",
@@ -34,9 +44,11 @@ export async function fetchNotes(
   }
 }
 
-export async function createNote(
-  noteData: Partial<Note>,
-): Promise<Note | null> {
+export async function createNote(noteData: {
+  title: string;
+  content: string;
+  tag: string;
+}): Promise<Note | null> {
   if (!NOTEHUB_TOKEN) {
     console.error("NOTEHUB  Access Token is missing! Check your .env file.");
     return null;
@@ -51,7 +63,7 @@ export async function createNote(
   }
 }
 
-export async function deleteNote(id: string | number): Promise<Note | null> {
+export async function deleteNote(id: string): Promise<Note | null> {
   if (!NOTEHUB_TOKEN) {
     console.error("NOTEHUB  Access Token is missing! Check your .env file.");
     return null;
